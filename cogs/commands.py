@@ -386,9 +386,10 @@ class Commands(commands.Cog):
             # Console Log
             print(f"{ctx.guild.name}'s Banlist Has User(s) : Output")
             # Banlist Embed
-            banlistEmbed = discord.Embed(title=f'Banned Users In {ctx.guild.name}',
+            banlistEmbed = discord.Embed(title=f'Banned Users In {ctx.guild.name} :notepad_spiral:',
                                          color=discord.Color(embedColor),
-                                         timestamp=datetime.utcnow()) \
+                                         timestamp=datetime.utcnow())\
+                .set_thumbnail(url=ctx.guild.icon_url) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             # For amount of bans in the ban list
