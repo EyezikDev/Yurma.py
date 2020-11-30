@@ -4,7 +4,7 @@
 
 # YurmaBot
 
-[![version](https://img.shields.io/badge/version-1.2-purple.svg)](https://semver.org)
+[![version](https://img.shields.io/badge/version-1.2-blueviolet.svg)]()
 
 By: EyezikDev
 
