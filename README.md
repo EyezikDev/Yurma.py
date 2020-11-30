@@ -8,6 +8,9 @@
 
 By: EyezikDev
 
+If someone some how finds this and wants to use it just make sure to make a 
+```token.txt``` and put it along side the ```bot.py``` file
+
 
  
 
