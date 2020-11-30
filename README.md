@@ -1,1 +1,2 @@
-Weclome to YurmaBot
+# YurmaBot
+#### Version: 1.2
