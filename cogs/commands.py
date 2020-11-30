@@ -125,7 +125,7 @@ class Commands(commands.Cog):
                                                timestamp=datetime.utcnow()) \
                     .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
                 # Send Embed
-                await ctx.send(embed=diceErrorEmbed, detele_after=10)
+                await ctx.send(embed=diceErrorEmbed, delete_after=10)
         # Catch...
         except:
             # Dice Error 2 Embed
@@ -136,7 +136,7 @@ class Commands(commands.Cog):
                                            timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
             # Send Embed
-            await ctx.send(embed=diceErrorEmbed, detele_after=10)
+            await ctx.send(embed=diceErrorEmbed, delete_after=10)
 
     ####################################################################################################################
     #                        #
@@ -156,7 +156,7 @@ class Commands(commands.Cog):
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # If amount of lines to clear is under 100
-        if amount < 100:
+        if amount <= 100:
             # Clear Embed
             clearEmbed = discord.Embed(title=f'Cleared {amount} Messages',
                                        color=discord.Color(embedColor),
@@ -165,7 +165,7 @@ class Commands(commands.Cog):
             # Purge Chat
             await ctx.channel.purge(limit=amount)
             # Send Embed
-            await ctx.send(embed=clearEmbed, detele_after=2)
+            await ctx.send(embed=clearEmbed, delete_after=2)
         # Else
         else:
             # Clear Error Embed
@@ -174,7 +174,7 @@ class Commands(commands.Cog):
                                             timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
             # Send Embed
-            await ctx.send(embed=clearErrorEmbed, detele_after=5)
+            await ctx.send(embed=clearErrorEmbed, delete_after=5)
 
     # # # # # # # # # # # # #
     # y!kick {user} {reason}#
@@ -218,7 +218,7 @@ class Commands(commands.Cog):
             .set_image(url=choice)
         # Send Embeds
         await ctx.send(embed=kickEmbed)
-        await ctx.send(embed=kickEmbed, detele_after=5)
+        await ctx.send(embed=kickEmbed, delete_after=5)
         await member.send(embed=youKickEmbed)
         # Kick
         await member.kick(reason=reason)
@@ -263,7 +263,7 @@ class Commands(commands.Cog):
         # Send Embeds
         await member.send(embed=youBanEmbed)
         await ctx.send(embed=banEmbed)
-        await ctx.send(embed=banEmbed, detele_after=10)
+        await ctx.send(embed=banEmbed, delete_after=10)
         # Ban
         await member.ban(reason=reason)
 
@@ -291,7 +291,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             # Display embed for 5 secs.
-            await ctx.send(embed=unbanEmbed, detele_after=5)
+            await ctx.send(embed=unbanEmbed, delete_after=5)
         # Else...
         else:
             # Try to...
@@ -318,7 +318,7 @@ class Commands(commands.Cog):
                         print(f"Unban {user} successful")
                         # Send Embed
                         await ctx.send(embed=unbanEmbed)
-                        await ctx.send(embed=unbanEmbed, detele_after=10)
+                        await ctx.send(embed=unbanEmbed, delete_after=10)
                         # Invite back to server
                         invite = await ctx.channel.create_invite()
                         # You Unban Embed
@@ -355,7 +355,7 @@ class Commands(commands.Cog):
                     .set_footer(text=f"Command Run By {ctx.author}",
                                 icon_url=f"{ctx.author.avatar_url}")
                 # Send Embed
-                await ctx.send(embed=unbanEmbed, detele_after=5)
+                await ctx.send(embed=unbanEmbed, delete_after=5)
 
     # # # # # # # # # #
     # y!banlist,bans  #
@@ -380,7 +380,7 @@ class Commands(commands.Cog):
                                          timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
             # Send Embed
-            await ctx.send(embed=banlistEmbed, detele_after=5)
+            await ctx.send(embed=banlistEmbed, delete_after=5)
         # Else...
         else:
             # Console Log
@@ -419,7 +419,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=noPermEmbed, detele_after=5)
+            await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # #
     # Kick Error  #
@@ -435,7 +435,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=noPermEmbed, detele_after=5)
+            await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # #
     # Ban Error #
@@ -451,7 +451,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=noPermEmbed, detele_after=5)
+            await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # #
     # Unban Error #
@@ -467,7 +467,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=noPermEmbed, detele_after=5)
+            await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # # #
     # Banlist Error #
@@ -484,7 +484,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=noPermEmbed, detele_after=5)
+            await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # # #
     # Not a command #
@@ -523,7 +523,7 @@ class Commands(commands.Cog):
         else:
             eyezikEmbed = discord.Embed(title='Your Not Emmy',
                                         color=discord.Color(embedColor))
-            await ctx.send(embed=eyezikEmbed, detele_after=3)
+            await ctx.send(embed=eyezikEmbed, delete_after=3)
 
     # # # # # # # # #
     # Eyezik Command#
