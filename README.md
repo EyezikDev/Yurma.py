@@ -4,7 +4,10 @@
 
 # YurmaBot
 
-[![version](https://img.shields.io/badge/version-1.2-blueviolet.svg)]()
+[![version](https://img.shields.io/github/v/release/eyezikdev/Yurmabot?color=blueviolet)]()
+[![commits](https://img.shields.io/github/commits-since/eyezikdev/yurmabot/latest?color=blueviolet)]()
+[![stars](https://img.shields.io/github/stars/eyezikdev/yurmabot?color=blueviolet)]()
+[![discord](https://img.shields.io/discord/509870514492407819?color=blueviolet&label=The%20Wave&logo=Discord&logoColor=blueviolet)](https://discord.gg/b2Xm9MsC)
 
 By: EyezikDev
 
