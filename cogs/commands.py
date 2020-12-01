@@ -14,6 +14,23 @@ unbanDiscord = "https://discord.gg/RQwQvuAu9a"
 botDebugChannel = 519324051701760012
 embedColor = 0x8011fc
 
+helpUntTitle = "Utility Commands  ──────────────────────   :gear:"
+helpUnt = "\n - **y!help** - Pulls up this menu\n" \
+          " - **y!ping** - Current bot ping\n" \
+          " - **y!user** - Shows your account information\n" \
+          " - **y!user {mention}** - Shows mentioned accounts information\n"
+
+helpFunTitle = "Fun Commands  ────────────────────────  :gem:"
+helpFun = "\n - **y!roll {number}** - Rolls a dice \n*(More then 6, less then 100,000)*\n"
+
+helpModTitle = "Moderation Commands  ───────────────────  :crossed_swords:"
+helpMod = "\n - **y!clear {number}** - Clears a number of lines in chat. \n*(Default 10, Max 100)*\n" \
+          "- **y!kick {mention} {reason}** - Kicks mentioned user\n" \
+          "- **y!ban {mention} {reason}** - Bans mentioned user\n" \
+          "- **y!unban {name#1234}** - Unbans user\n" \
+          "- **y!banlist** - Shows banned users of the server\n" \
+          "────────────────────────────────────"
+
 
 class Commands(commands.Cog):
     def __init__(self, client):
@@ -24,6 +41,26 @@ class Commands(commands.Cog):
     # !!!!BOT UTILS!!!! #
     #                   #
     #####################
+
+    @commands.command()
+    async def help(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        pingEmbed = discord.Embed(title='~~──────────────~~ Help ~~──────────────~~',
+                                  description=f'Full Documentation of commands [here TODO]'
+                                              f'(https://www.eyezik.net/yurmabot/docs)',
+                                  color=discord.Color(embedColor),
+                                  timestamp=datetime.utcnow()) \
+            .add_field(name=helpUntTitle, value=helpUnt, inline=False) \
+            .add_field(name=helpFunTitle, value=helpFun, inline=False) \
+            .add_field(name=helpModTitle, value=helpMod, inline=False) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            .set_thumbnail(url=ctx.bot.user.avatar_url)
+            # Send Embed
+        await ctx.send(embed=pingEmbed)
 
     # # # # # # # # #
     # y!ping        #
@@ -217,7 +254,6 @@ class Commands(commands.Cog):
                         icon_url=f"https://cdn.discordapp.com/icons/{ctx.guild.id}/{ctx.guild.icon}.png") \
             .set_image(url=choice)
         # Send Embeds
-        await ctx.send(embed=kickEmbed)
         await ctx.send(embed=kickEmbed, delete_after=5)
         await member.send(embed=youKickEmbed)
         # Kick
@@ -262,7 +298,6 @@ class Commands(commands.Cog):
                         icon_url=f"https://cdn.discordapp.com/icons/{ctx.guild.id}/{ctx.guild.icon}.png")
         # Send Embeds
         await member.send(embed=youBanEmbed)
-        await ctx.send(embed=banEmbed)
         await ctx.send(embed=banEmbed, delete_after=10)
         # Ban
         await member.ban(reason=reason)
@@ -317,7 +352,6 @@ class Commands(commands.Cog):
                         # Console Log
                         print(f"Unban {user} successful")
                         # Send Embed
-                        await ctx.send(embed=unbanEmbed)
                         await ctx.send(embed=unbanEmbed, delete_after=10)
                         # Invite back to server
                         invite = await ctx.channel.create_invite()
@@ -388,7 +422,7 @@ class Commands(commands.Cog):
             # Banlist Embed
             banlistEmbed = discord.Embed(title=f'Banned Users In {ctx.guild.name} :notepad_spiral:',
                                          color=discord.Color(embedColor),
-                                         timestamp=datetime.utcnow())\
+                                         timestamp=datetime.utcnow()) \
                 .set_thumbnail(url=ctx.guild.icon_url) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
@@ -530,7 +564,7 @@ class Commands(commands.Cog):
     # Eyezik Command#
     # # # # # # # # #
     @commands.command()
-    async def fuckyou(self, ctx, member: discord.Member = None):
+    async def frickyou(self, ctx, member: discord.Member = None):
         await ctx.channel.purge(limit=1)
         if ctx.author.id == 347718757105532939:
             eyezikEmbed = discord.Embed(title=f"",
