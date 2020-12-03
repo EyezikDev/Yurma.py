@@ -1,10 +1,11 @@
 from datetime import datetime
-
-import discord
 from discord.ext import commands
 
+import discord
+
 # Version (DO NOT TOUCH)
-YurmaVersion = 1.2
+
+YurmaVersion = 1.5
 
 footerMessageDefault = f"v{discord.__version__} Discord.py  •  v{YurmaVersion} YurmaBot"
 botDebugChannel = 519324051701760012

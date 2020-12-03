@@ -1,35 +1,50 @@
+import traceback
 from datetime import datetime
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CommandNotFound, MissingPermissions
+from pip._vendor import requests
+from bot import fortnite_tracker_api_top, fortnite_tracker_api_stats, fortnite_avatar, read_key
 
 import random
 import discord
 
 # Version (DO NOT TOUCH)
 
-YurmaVersion = 1.2
+YurmaVersion = 1.5
 
 footerMessageDefault = f"v{discord.__version__} Discord.py"
 unbanDiscord = "https://discord.gg/RQwQvuAu9a"
 botDebugChannel = 519324051701760012
 embedColor = 0x8011fc
 
-helpUntTitle = "Utility Commands  ──────────────────────   :gear:"
-helpUnt = "\n - **y!help** - Pulls up this menu\n" \
-          " - **y!ping** - Current bot ping\n" \
-          " - **y!user** - Shows your account information\n" \
-          " - **y!user {mention}** - Shows mentioned accounts information\n"
+helpUntTitle = "Utility Commands :gear:"
+helpUnt = "\n > **y!help** - Pulls up this menu\n" \
+          " > **y!ping** - Current bot ping\n" \
+          " > **y!user** - Shows your account information\n" \
+          " > **y!user {mention}** - Shows mentioned accounts information\n" \
+          " > **y!facts** - Facts command help menu\n" \
+          " > **y!search {phrase}** - Built in search engine\n" \
+          " > **y!fortnite** - Fortnite command help menu\n"
 
-helpFunTitle = "Fun Commands  ────────────────────────  :gem:"
-helpFun = "\n - **y!roll {number}** - Rolls a dice \n*(More then 6, less then 100,000)*\n"
+helpFunTitle = "Fun Commands :gem:"
+helpFun = "\n > **y!roll {number}** - Rolls a dice \n> *(More then 6, less then 100,000)*\n"
 
-helpModTitle = "Moderation Commands  ───────────────────  :crossed_swords:"
-helpMod = "\n - **y!clear {number}** - Clears a number of lines in chat. \n*(Default 10, Max 100)*\n" \
-          "- **y!kick {mention} {reason}** - Kicks mentioned user\n" \
-          "- **y!ban {mention} {reason}** - Bans mentioned user\n" \
-          "- **y!unban {name#1234}** - Unbans user\n" \
-          "- **y!banlist** - Shows banned users of the server\n" \
-          "────────────────────────────────────"
+helpModTitle = "Moderation Commands :crossed_swords:"
+helpMod = "\n> **y!joinmessage** - Information on setting up user join message TODO\n" \
+          "> **y!leavemessage** - Information on setting up leave join message TODO\n" \
+          "> **y!clear {number}** - Clears a number of lines in chat. \n> *(Default 10, Max 100)*\n" \
+          "> **y!kick {mention} {reason}** - Kicks mentioned user\n" \
+          "> **y!ban {mention} {reason}** - Bans mentioned user\n" \
+          "> **y!unban {name#1234}** - Unbans user\n" \
+          "> **y!banlist** - Shows banned users of the server\n"
+
+helpFortniteTitle = "Epic Games Stats :chart_with_upwards_trend: "
+helpFortnite = "\n> **y!fortnite os {platform} {name}** - Overall Stats\n" \
+               "> **y!fortnite ps {platform} {name}** - Placement Stats\n"
+
+helpFactsTitle = "Type of Facts :globe_with_meridians:"
+helpFacts = "\n> **y!fact random** - Quick random fact\n" \
+            "> **y!fact animals {animal}** - Quick fact of a animal\n"
 
 
 class Commands(commands.Cog):
@@ -49,7 +64,7 @@ class Commands(commands.Cog):
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
-        pingEmbed = discord.Embed(title='~~──────────────~~ Help ~~──────────────~~',
+        helpEmbed = discord.Embed(title='~~──────────────~~ Help ~~──────────────~~',
                                   description=f'Full Documentation of commands [here TODO]'
                                               f'(https://www.eyezik.net/yurmabot/docs)',
                                   color=discord.Color(embedColor),
@@ -59,8 +74,8 @@ class Commands(commands.Cog):
             .add_field(name=helpModTitle, value=helpMod, inline=False) \
             .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
             .set_thumbnail(url=ctx.bot.user.avatar_url)
-            # Send Embed
-        await ctx.send(embed=pingEmbed)
+        # Send Embed
+        await ctx.send(embed=helpEmbed)
 
     # # # # # # # # #
     # y!ping        #
@@ -112,7 +127,7 @@ class Commands(commands.Cog):
             .add_field(name="Account Id:", value=member.id, inline=False) \
             .add_field(name="Account Creation Date:", value=member.created_at.strftime("%b. %d %Y - %I:%M %p"),
                        inline=False) \
-            .add_field(name="Join Server Date:", value=member.joined_at.strftime("%b. %d %Y - %H:%M %p"),
+            .add_field(name="Account Server Join Date:", value=member.joined_at.strftime("%b. %d %Y - %H:%M %p"),
                        inline=False) \
             .add_field(name="Account Roles:", value=f"{separator.join(roleList)}", inline=False) \
             .add_field(name="Profile Picture:", value=f"[Here]({member.avatar_url})", inline=False) \
@@ -121,6 +136,198 @@ class Commands(commands.Cog):
                         icon_url=f"{ctx.author.avatar_url}")
         # Send Embed
         await ctx.send(embed=userEmbed)
+
+    @commands.group(invoke_without_command=True)
+    async def facts(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        fortniteEmbed = discord.Embed(title='~~────────────~~ Facts ~~────────────~~',
+                                      color=discord.Color(embedColor),
+                                      timestamp=datetime.utcnow()) \
+            .add_field(name=helpFactsTitle, value=helpFacts, inline=False) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            .set_thumbnail(url=ctx.bot.user.avatar_url)
+        # Send Embed
+        await ctx.send(embed=fortniteEmbed)
+
+    @facts.command()
+    async def random(self, ctx):
+        fact = ""
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        URL = f"https://uselessfacts.jsph.pl/random.json?language=en"
+        REQ = requests.get(URL, headers={})
+        if REQ.status_code == 200:
+            fact = REQ.json()['text']
+        else:
+            await ctx.send(f"API returned a {REQ.status}.")
+        randomEmbed = discord.Embed(title=f'- Random Fact -',
+                                    description=f'> {fact}',
+                                    color=discord.Color(embedColor),
+                                    timestamp=datetime.utcnow()) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+        await ctx.send(embed=randomEmbed)
+
+    @facts.command()
+    async def animals(self, ctx, animal):
+        fact, link = "", ""
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        animals = ["dog", "cat", "fox", "panda", "bird", "koala"]
+        if animal in animals:
+            URL = f"https://some-random-api.ml/facts/{animal}"
+            IMG = f"https://some-random-api.ml/img/{animal}"
+            REQ = requests.get(URL, headers={})
+            REQIMG = requests.get(IMG, headers={})
+            if REQ.status_code == 200:
+                fact = REQ.json()['fact']
+            else:
+                await ctx.send(f"API returned a {REQ.status}.")
+            if REQIMG.status_code == 200:
+                link = REQIMG.json()['link']
+            else:
+                await ctx.send(f"API returned a {REQ.status}.")
+
+            animalEmbed = discord.Embed(title=f'- {animal.capitalize()} Fact -',
+                                        description=f'> {fact}',
+                                        color=discord.Color(embedColor),
+                                        timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+                .set_thumbnail(url=link)
+            await ctx.send(embed=animalEmbed)
+        else:
+            separator = ', '
+            animalEmbed = discord.Embed(title=f'Not a valid animal ❌',
+                                        color=discord.Color(embedColor),
+                                        timestamp=datetime.utcnow()) \
+                .add_field(name="Animal List", value=f"> {separator.join(animals)}", inline=False) \
+                .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+            # Purge Chat
+            await ctx.send(embed=animalEmbed)
+
+    @commands.command()
+    async def search(self, ctx, *, google):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+
+        searchTerm = google.replace(" ", "+")
+        url = "https://bing-web-search1.p.rapidapi.com/search"
+        querystring = {"q": f"{searchTerm}", "mkt": "en-us", "textFormat": "Raw", "safeSearch": "Strict",
+                       "freshness": "Day",
+                       "answerCount": "3"}
+        headers = {
+            'x-bingapis-sdk': "true",
+            'x-rapidapi-key': f"{read_key()}",
+            'x-rapidapi-host': "bing-web-search1.p.rapidapi.com"
+        }
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        search = response.json()['queryContext']['originalQuery']
+        URL = f"https://www.google.com/search?q={search}"
+        googleEmbed = discord.Embed(title=f'~~──────────────────~~ Google ~~───────────────────~~',
+                                    description=f'Result for: **[{google}]({URL})**',
+                                    color=discord.Color(embedColor),
+                                    timestamp=datetime.utcnow()) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+        for i in range(0, 3):
+            googleEmbed.add_field(name=f"────────────────────────────────────────────────",
+                                  value=f"**[{response.json()['webPages']['value'][i]['name']}]"
+                                        f"({response.json()['webPages']['value'][i]['url']})**\n"
+                                        f"{response.json()['webPages']['value'][i]['snippet']}", inline=False)
+        googleEmbed.add_field(name=f"────────────────────────────────────────────────",
+                              value=f"For more results check [here]({URL})", inline=False)
+        # Send Embed
+        await ctx.send(embed=googleEmbed)
+
+    @commands.group(invoke_without_command=True)
+    async def fortnite(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        fortniteEmbed = discord.Embed(title='~~─────────────~~ Fortnite ~~─────────────~~',
+                                      description=f'Full Documentation of commands [here TODO]'
+                                                  f'(https://www.eyezik.net/yurmabot/docs)',
+                                      color=discord.Color(embedColor),
+                                      timestamp=datetime.utcnow()) \
+            .add_field(name=helpFortniteTitle, value=helpFortnite, inline=False) \
+            .add_field(name="Season Info:", value="TEst", inline=False) \
+            .add_field(name="Item Shop", value="Test", inline=False) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            .set_thumbnail(url=ctx.bot.user.avatar_url)
+        # Send Embed
+        await ctx.send(embed=fortniteEmbed)
+
+    @fortnite.group()
+    async def os(self, ctx, platform, nickname):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        if platform not in ('pc', 'xbl', 'psn'):
+            await ctx.send("error")
+            return
+        else:
+            res = fortnite_tracker_api_stats(platform, nickname)
+            avatar = fortnite_avatar(platform, nickname)
+            if res:
+                matches_played = res[0]['value']
+                wins = res[1]['value']
+                win_percent = res[2]['value']
+                kills = res[3]['value']
+                kd = res[4]['value']
+                fortniteEmbed = discord.Embed(title=f"- Lifetime Stats for {nickname} - ",
+                                              color=discord.Color(embedColor),
+                                              timestamp=datetime.utcnow()) \
+                    .add_field(name="Matches Played", value=f"> {matches_played}\n", inline=False) \
+                    .add_field(name="Wins", value=f"> {wins}\n", inline=False) \
+                    .add_field(name="Win percent", value=f"> {win_percent}" + '\n', inline=False) \
+                    .add_field(name="Kills", value=f"> {kills}" + '\n', inline=False) \
+                    .add_field(name="K/D", value=f"> {kd}" + '\n', inline=False) \
+                    .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+                    .set_thumbnail(url=avatar)
+                await ctx.send(embed=fortniteEmbed)
+            else:
+                await ctx.send('Failed to get data. Double check spelling of your nickname.')
+
+    @fortnite.group()
+    async def ps(self, ctx, platform, nickname):
+        if platform not in ('pc', 'xbl', 'psn'):
+            await ctx.send("error")
+            return
+        else:
+            res = fortnite_tracker_api_top(platform, nickname)
+            avatar = fortnite_avatar(platform, nickname)
+            if res:
+                top3 = res[0]['value']
+                top5 = res[1]['value']
+                top6 = res[2]['value']
+                top10 = res[3]['value']
+                top12 = res[4]['value']
+                top25 = res[5]['value']
+                fortniteEmbed = discord.Embed(title="- Lifetime Stats for -" + nickname,
+                                              color=discord.Color(embedColor),
+                                              timestamp=datetime.utcnow()) \
+                    .add_field(name="Solos:", value=f"> **Top 3's**\n> {top3}\n"
+                                                    f"> **Top 5's**\n> {top5}\n", inline=False) \
+                    .add_field(name="Duos:", value=f"> **Top 6's**\n> {top6}\n"
+                                                   f"> **Top 10's**\n> {top10}\n", inline=False) \
+                    .add_field(name="Squads:", value=f"> **Top 12's**\n> {top12}\n"
+                                                     f"> **Top 25's**\n> {top25}\n", inline=False) \
+                    .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+                    .set_thumbnail(url=avatar)
+                await ctx.send(embed=fortniteEmbed)
+            else:
+                await ctx.send('Failed to get data. Double check spelling of your nickname.')
 
     ####################################################################################################################
     #                   #
@@ -536,15 +743,38 @@ class Commands(commands.Cog):
             await ctx.channel.purge(limit=1)
             await ctx.send(embed=notCmdEmbed, delete_after=3)
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+
+        if isinstance(error, commands.CommandNotFound):
+            notCmdEmbed = discord.Embed(title=f'Not a command ❌',
+                                        color=discord.Color(embedColor),
+                                        timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}",
+                            icon_url=f"{ctx.author.avatar_url}")
+            await ctx.channel.purge(limit=1)
+            await ctx.send(embed=notCmdEmbed, delete_after=3)
+
+        elif isinstance(error, commands.CommandOnCooldown):
+            notCmdEmbed = discord.Embed(title=f'Command on cool down ❌',
+                                        color=discord.Color(embedColor),
+                                        timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}",
+                            icon_url=f"{ctx.author.avatar_url}")
+            await ctx.channel.purge(limit=1)
+            await ctx.send(embed=notCmdEmbed, delete_after=3)
+
+        else:
+            print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
+
     ####################################################################################################################
     #               #
     # !!!!EXTRA!!!! #
     #               #
     #################
-
-    # # # # # # # # #
+    # # # # # # # #
     # Emmy Command#
-    # # # # # # # # #
+    # # # # # # # #
     @commands.command()
     async def emmy(self, ctx, member: discord.Member):
         await ctx.channel.purge(limit=1)
