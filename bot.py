@@ -84,6 +84,25 @@ def fortnite_avatar(platform, nickname):
         return False
 
 
+left = '⏪'
+right = '⏩'
+
+messages = ("1", "2", "3")
+
+
+def predicate(self, message, l, r):
+    def check(reaction, user):
+        if reaction.message.id != message.id or user == client.user:
+            return False
+        if l and reaction.emoji == left:
+            return True
+        if r and reaction.emoji == right:
+            return True
+        return False
+
+    return check
+
+
 ########################################################################################################################
 #              #
 # !!!!COGS!!!! #

@@ -1,5 +1,7 @@
 import traceback
 from datetime import datetime
+from discord.ext import menus
+
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CommandNotFound, MissingPermissions
 from pip._vendor import requests
