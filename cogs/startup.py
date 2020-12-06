@@ -5,7 +5,7 @@ import discord
 
 # Version (DO NOT TOUCH)
 
-YurmaVersion = 1.5
+YurmaVersion = 2.0
 
 footerMessageDefault = f"v{discord.__version__} Discord.py  •  v{YurmaVersion} YurmaBot"
 botDebugChannel = 519324051701760012
@@ -22,12 +22,16 @@ class Startup(commands.Cog):
         botOnline = self.client.get_channel(botDebugChannel)
         # Embed for start message
         startEmbed = discord.Embed(title='~~──────────~~ Bot Online! ~~──────────~~',
-                                   description=f'Bot Info',
                                    color=discord.Color(embedColor),
                                    timestamp=datetime.utcnow()) \
-            .add_field(name="Ping 🏓", value=f"{round(self.client.latency * 1000)}ms", inline=False) \
-            .add_field(name="Start Time :alarm_clock:", value=datetime.utcnow(), inline=False) \
-            .add_field(name="YurmaBot Version itseye2Yurma ", value=datetime.utcnow(), inline=False) \
+            .add_field(name="Ping 🏓", value=f"> {round(self.client.latency * 1000)}ms", inline=False) \
+            .add_field(name="Start Time :alarm_clock:", value=f"> {datetime.utcnow().strftime('%c')}", inline=False) \
+            .add_field(name="YurmaBot Version <:YurmaBot:785238144235864094>", value=f"> v{YurmaVersion}",
+                       inline=False) \
+            .add_field(name="Discord.py Version <:Discordpy:785235018103783474>", value=f"> v{discord.__version__}",
+                       inline=False) \
+            .add_field(name="Python Version <:Python:785237022382096455>", value=f"> v3.9",
+                       inline=False) \
             .set_footer(text=f'{footerMessageDefault}') \
             .set_author(name=self.client.user, icon_url=self.client.user.avatar_url)
         # Send start message
