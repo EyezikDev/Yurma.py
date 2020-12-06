@@ -1,11 +1,12 @@
+import os
+import sys
 import traceback
 from datetime import datetime
-from discord.ext import menus
 
 from discord.ext import commands
-from discord.ext.commands import has_permissions, CommandNotFound, MissingPermissions
+from discord.ext.commands import has_permissions, MissingPermissions
 from pip._vendor import requests
-from bot import fortnite_tracker_api_top, fortnite_tracker_api_stats, fortnite_avatar, read_key
+from bot import fortnite_tracker_api_top, fortnite_tracker_api_stats, fortnite_avatar, read_key, MyMenu
 
 import random
 import discord
@@ -21,6 +22,7 @@ embedColor = 0x8011fc
 
 helpUntTitle = "Utility Commands :gear:"
 helpUnt = "\n > **y!help** - Pulls up this menu\n" \
+          " > **y!invite** - Invite YurmaBot to your own server\n" \
           " > **y!ping** - Current bot ping\n" \
           " > **y!user** - Shows your account information\n" \
           " > **y!user {mention}** - Shows mentioned accounts information\n" \
@@ -38,8 +40,8 @@ helpMod = "\n> **y!joinmessage** - Information on setting up user join message T
           "> **y!kick {mention} {reason}** - Kicks mentioned user\n" \
           "> **y!ban {mention} {reason}** - Bans mentioned user\n" \
           "> **y!unban {name#1234}** - Unbans user\n" \
-          "> **y!banlist** - Shows banned users of the server\n"
-
+          "> **y!banlist** - Shows banned users of the server\n" \
+          "> **y!leave** - Safe way to remove YurmaBot"
 helpFortniteTitle = "Epic Games Stats :chart_with_upwards_trend: "
 helpFortnite = "\n> **y!fortnite os {platform} {name}** - Overall Stats\n" \
                "> **y!fortnite ps {platform} {name}** - Placement Stats\n"
@@ -53,6 +55,24 @@ class Commands(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.command()
+    async def restart(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        if ctx.author.id == 347718757105532939:
+            # Console Log
+            print(f"{ctx.author} executed {ctx.command}")
+            restartEmbed = discord.Embed(title='~~──────────~~ Restarting ~~───────────~~',
+                                         color=discord.Color(embedColor),
+                                         timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+            # Send Embed
+            await ctx.send(embed=restartEmbed)
+            os.execl(sys.executable, sys.executable, *sys.argv)
+        else:
+            # Console Log
+            print(f"{ctx.author} executed {ctx.command}, but it did nothing")
+
     ####################################################################################################################
     #                   #
     # !!!!BOT UTILS!!!! #
@@ -60,6 +80,7 @@ class Commands(commands.Cog):
     #####################
 
     @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def help(self, ctx):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -79,11 +100,30 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=helpEmbed)
 
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def invite(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        inviteEmbed = discord.Embed(title='~~────────────~~ Invite ~~─────────────~~',
+                                    description=f'YurmaBot invite link [here!]'
+                                                f'(https://discord.com/api/oauth2/authorize?client_id='
+                                                f'781139148249497610&permissions=1342663799&scope=bot)',
+                                    color=discord.Color(embedColor),
+                                    timestamp=datetime.utcnow()) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            # Send Embed
+        await ctx.send(embed=inviteEmbed)
+
     # # # # # # # # #
     # y!ping        #
     # # # # # # # # #
     # Sends bot ping
     @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def ping(self, ctx):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -94,7 +134,7 @@ class Commands(commands.Cog):
                     "https://media1.tenor.com/images/2b27c6e7747d319f76fd98d2a226ab33/tenor.gif"]
         choice = random.choice(pingPics)
         # Ping Embed
-        pingEmbed = discord.Embed(title='Pong Latency  🏓',
+        pingEmbed = discord.Embed(title='~~──────────~~ Latency  🏓 ~~──────────~~',
                                   description=f'{round(self.client.latency * 1000)}ms',
                                   color=discord.Color(embedColor),
                                   timestamp=datetime.utcnow()) \
@@ -105,6 +145,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=pingEmbed)
 
     @commands.command(aliases=['userinfo', 'info'])
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def user(self, ctx):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -123,7 +164,8 @@ class Commands(commands.Cog):
             roleList.append(role.mention)
         # Reverse the list so the top role is first
         roleList.reverse()
-        userEmbed = discord.Embed(color=discord.Color(embedColor),
+        userEmbed = discord.Embed(title="~~───────────~~ User Info ~~───────────~~",
+                                  color=discord.Color(embedColor),
                                   timestamp=datetime.utcnow()) \
             .add_field(name="Server Nickname:", value=f"{member.display_name}", inline=False) \
             .add_field(name="Account Id:", value=member.id, inline=False) \
@@ -140,6 +182,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=userEmbed)
 
     @commands.group(invoke_without_command=True)
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def facts(self, ctx):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -155,6 +198,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=fortniteEmbed)
 
     @facts.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def random(self, ctx):
         fact = ""
         # Delete command message
@@ -167,7 +211,7 @@ class Commands(commands.Cog):
             fact = REQ.json()['text']
         else:
             await ctx.send(f"API returned a {REQ.status}.")
-        randomEmbed = discord.Embed(title=f'- Random Fact -',
+        randomEmbed = discord.Embed(title=f'~~──────────~~ Random Fact ~~───────────~~',
                                     description=f'> {fact}',
                                     color=discord.Color(embedColor),
                                     timestamp=datetime.utcnow()) \
@@ -175,6 +219,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=randomEmbed)
 
     @facts.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def animals(self, ctx, animal):
         fact, link = "", ""
         # Delete command message
@@ -196,7 +241,7 @@ class Commands(commands.Cog):
             else:
                 await ctx.send(f"API returned a {REQ.status}.")
 
-            animalEmbed = discord.Embed(title=f'- {animal.capitalize()} Fact -',
+            animalEmbed = discord.Embed(title=f'~~───────────~~ {animal.capitalize()} Fact ~~───────────~~',
                                         description=f'> {fact}',
                                         color=discord.Color(embedColor),
                                         timestamp=datetime.utcnow()) \
@@ -214,6 +259,7 @@ class Commands(commands.Cog):
             await ctx.send(embed=animalEmbed)
 
     @commands.command()
+    @commands.cooldown(1, 15, commands.BucketType.guild)
     async def search(self, ctx, *, google):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -249,6 +295,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=googleEmbed)
 
     @commands.group(invoke_without_command=True)
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def fortnite(self, ctx):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -269,6 +316,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=fortniteEmbed)
 
     @fortnite.group()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def os(self, ctx, platform, nickname):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -302,6 +350,7 @@ class Commands(commands.Cog):
                 await ctx.send('Failed to get data. Double check spelling of your nickname.')
 
     @fortnite.group()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def ps(self, ctx, platform, nickname):
         if platform not in ('pc', 'xbl', 'psn'):
             await ctx.send("error")
@@ -342,6 +391,7 @@ class Commands(commands.Cog):
     # # # # # # # # #
     # Rolls a dice with 6-100000 sides
     @commands.command(aliases=['dice'])
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def roll(self, ctx, sides):
         # Delete command message
         await ctx.channel.purge(limit=1)
@@ -643,6 +693,18 @@ class Commands(commands.Cog):
             # Send Embed
             await ctx.send(embed=banlistEmbed)
 
+    @commands.command()
+    @commands.cooldown(1, 60, commands.BucketType.guild)
+    @has_permissions(kick_members=True)
+    async def leave(self, ctx):
+        # Delete command message
+        await ctx.channel.purge(limit=1)
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        m = MyMenu()
+        await m.start(ctx)
+
     ####################################################################################################################
     #                    #
     # !!!!BOT ERRORS!!!! #
@@ -736,20 +798,10 @@ class Commands(commands.Cog):
     # Tell user that what they typed isn't a command
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        if isinstance(error, CommandNotFound):
-            notCmdEmbed = discord.Embed(title=f'Not a command ❌',
-                                        color=discord.Color(embedColor),
-                                        timestamp=datetime.utcnow()) \
-                .set_footer(text=f"Command Run By {ctx.author}",
-                            icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
-            await ctx.send(embed=notCmdEmbed, delete_after=3)
-
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
 
         if isinstance(error, commands.CommandNotFound):
             notCmdEmbed = discord.Embed(title=f'Not a command ❌',
+                                        description="> y!help - for a list of commands",
                                         color=discord.Color(embedColor),
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
@@ -764,7 +816,7 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.channel.purge(limit=1)
-            await ctx.send(embed=notCmdEmbed, delete_after=3)
+            await ctx.send(embed=notCmdEmbed, delete_after=1)
 
         else:
             print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))

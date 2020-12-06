@@ -21,8 +21,13 @@ class Startup(commands.Cog):
         # Debug channel for OWNER use
         botOnline = self.client.get_channel(botDebugChannel)
         # Embed for start message
-        startEmbed = discord.Embed(title='Bot Online!', description=f'{round(self.client.latency * 1000)}ms',
-                                   color=discord.Color(embedColor), timestamp=datetime.utcnow()) \
+        startEmbed = discord.Embed(title='~~──────────~~ Bot Online! ~~──────────~~',
+                                   description=f'Bot Info',
+                                   color=discord.Color(embedColor),
+                                   timestamp=datetime.utcnow()) \
+            .add_field(name="Ping 🏓", value=f"{round(self.client.latency * 1000)}ms", inline=False) \
+            .add_field(name="Start Time :alarm_clock:", value=datetime.utcnow(), inline=False) \
+            .add_field(name="YurmaBot Version itseye2Yurma ", value=datetime.utcnow(), inline=False) \
             .set_footer(text=f'{footerMessageDefault}') \
             .set_author(name=self.client.user, icon_url=self.client.user.avatar_url)
         # Send start message
@@ -37,14 +42,14 @@ class Startup(commands.Cog):
     # # # # # #
     # When Bot goes offline mirror the on_ready() output.
     # Mine ping
-    @commands.Cog.listener()
-    async def on_disconnect(self):
-        botOnline = self.client.get_channel(519324051701760012)
-        endEmbed = discord.Embed(title='Bot Offline!',
-                                 color=discord.Color(embedColor),
-                                 timestamp=datetime.utcnow()) \
-            .set_footer(text=f'')
-        await botOnline.send(embed=endEmbed)
+    # @commands.Cog.listener()
+    # async def on_disconnect(self):
+    #    botOnline = self.client.get_channel(519324051701760012)
+    #    endEmbed = discord.Embed(title='Bot Offline!',
+    #                             color=discord.Color(embedColor),
+    #                             timestamp=datetime.utcnow()) \
+    #        .set_footer(text=f'')
+    #    await botOnline.send(embed=endEmbed)
 
 
 def setup(client):

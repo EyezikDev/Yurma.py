@@ -1,13 +1,18 @@
 # Imports
-from discord.ext import commands
+from datetime import datetime
+
+from discord.ext import commands, menus
 
 import os
+import discord
 
 # Test
 # Version (DO NOT TOUCH)
 from pip._vendor import requests
 
 YurmaVersion = 1.5
+
+embedColor = 0x8011fc
 
 
 # Token read from text file
@@ -84,23 +89,26 @@ def fortnite_avatar(platform, nickname):
         return False
 
 
-left = '⏪'
-right = '⏩'
+class MyMenu(menus.Menu):
+    async def send_initial_message(self, ctx, channel):
+        leaveEmbed = discord.Embed(title=f'- Remove YurmaBot From This Server? -',
+                                   description=f'> :white_check_mark: - Yes \n> :x: - No',
+                                   color=discord.Color(embedColor),
+                                   timestamp=datetime.utcnow())
+        return await channel.send(embed=leaveEmbed)
 
-messages = ("1", "2", "3")
+    @menus.button('\N{WHITE HEAVY CHECK MARK}')
+    async def on_thumbs_up(self, payload):
+        leaveEmbed = discord.Embed(title=f'- Removed YurmaBot -',
+                                   color=discord.Color(embedColor),
+                                   timestamp=datetime.utcnow())
+        await self.message.edit(embed=leaveEmbed)
+        await self.message.delete(delay=3)
+        await self.message.guild.leave(delay=4)
 
-
-def predicate(self, message, l, r):
-    def check(reaction, user):
-        if reaction.message.id != message.id or user == client.user:
-            return False
-        if l and reaction.emoji == left:
-            return True
-        if r and reaction.emoji == right:
-            return True
-        return False
-
-    return check
+    @menus.button('\N{CROSS MARK}')
+    async def on_thumbs_down(self, payload):
+        await self.message.delete()
 
 
 ########################################################################################################################
