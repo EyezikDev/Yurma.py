@@ -58,7 +58,10 @@ class Commands(commands.Cog):
     @commands.command()
     async def restart(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         if ctx.author.id == 347718757105532939:
             # Console Log
             print(f"{ctx.author} executed {ctx.command}")
@@ -79,11 +82,18 @@ class Commands(commands.Cog):
     #                   #
     #####################
 
+    # # # # # #
+    # y!help  #
+    # # # # # #
+    # Command help
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def help(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
@@ -100,11 +110,18 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=helpEmbed)
 
+    # # # # # # #
+    # y!invite  #
+    # # # # # # #
+    # Invite YurmaBot to your discord
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def invite(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
@@ -118,15 +135,18 @@ class Commands(commands.Cog):
             # Send Embed
         await ctx.send(embed=inviteEmbed)
 
-    # # # # # # # # #
-    # y!ping        #
-    # # # # # # # # #
+    # # # # # #
+    # y!ping  #
+    # # # # # #
     # Sends bot ping
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def ping(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         pingPics = ["https://media.tenor.com/images/3f3ab14069ecd0df6153ad94ed6695fc/tenor.gif",
@@ -144,11 +164,18 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=pingEmbed)
 
+    # # # # # #
+    # y!user  #
+    # # # # # #
+    # User information based on server
     @commands.command(aliases=['userinfo', 'info'])
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def user(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Check if there was a mentioned user
@@ -181,11 +208,18 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=userEmbed)
 
+    # # # # # # # # #
+    # y!facts       #
+    # # # # # # # # #
+    # Fact command help
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def facts(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         fortniteEmbed = discord.Embed(title='~~────────────~~ Facts ~~────────────~~',
@@ -197,12 +231,19 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=fortniteEmbed)
 
+    # # # # # # # # # # # #
+    # y!facts random      #
+    # # # # # # # # # # # #
+    # Random Fact (BROKEN)
     @facts.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def random(self, ctx):
         fact = ""
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         URL = f"https://uselessfacts.jsph.pl/random.json?language=en"
@@ -218,12 +259,19 @@ class Commands(commands.Cog):
             .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
         await ctx.send(embed=randomEmbed)
 
+    # # # # # # # # # # # #
+    # y!facts animals     #
+    # # # # # # # # # # # #
+    # Animal Fact
     @facts.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def animals(self, ctx, animal):
         fact, link = "", ""
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         animals = ["dog", "cat", "fox", "panda", "bird", "koala"]
@@ -258,11 +306,18 @@ class Commands(commands.Cog):
             # Purge Chat
             await ctx.send(embed=animalEmbed)
 
+    # # # # # # # # #
+    # y!search      #
+    # # # # # # # # #
+    # Search Engine
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.guild)
     async def search(self, ctx, *, google):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
 
@@ -294,11 +349,18 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=googleEmbed)
 
+    # # # # # # # # #
+    # y!fortnite    #
+    # # # # # # # # #
+    # Fortnite command help
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fortnite(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
@@ -315,11 +377,18 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=fortniteEmbed)
 
+    # # # # # # # # # # #
+    # y!fortnite os     #
+    # # # # # # # # # # #
+    # Fortnite overall stats
     @fortnite.group()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def os(self, ctx, platform, nickname):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
@@ -349,6 +418,10 @@ class Commands(commands.Cog):
             else:
                 await ctx.send('Failed to get data. Double check spelling of your nickname.')
 
+    # # # # # # # # # # #
+    # y!fortnite ps     #
+    # # # # # # # # # # #
+    # Fortnite placements stats
     @fortnite.group()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def ps(self, ctx, platform, nickname):
@@ -394,7 +467,10 @@ class Commands(commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def roll(self, ctx, sides):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Try...
@@ -448,7 +524,10 @@ class Commands(commands.Cog):
     @has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=10):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # If amount of lines to clear is under 100
@@ -481,7 +560,10 @@ class Commands(commands.Cog):
     @has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Gifs for embed, pick at random
         kickPics = ["https://media1.tenor.com/images/2ce5a017f6556ff103bce87b273b89b7/tenor.gif",
                     "https://media1.tenor.com/images/d54f63dd2f5f807f6de4eedb48ca949b/tenor.gif",
@@ -526,7 +608,10 @@ class Commands(commands.Cog):
     @has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Gifs for embed, pick at random
         banPics = ["https://media1.tenor.com/images/885cdbb1e6950cefdc981db000079c85/tenor.gif",
                    "https://media1.tenor.com/images/380b96c755c9d0855a784c8f51e1515f/tenor.gif",
@@ -569,7 +654,10 @@ class Commands(commands.Cog):
     @has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command} : Unbanning {member}")
         # Grab the list of banned users in the server
@@ -658,7 +746,10 @@ class Commands(commands.Cog):
     @has_permissions(ban_members=True)
     async def banlist(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Grab the list of banned users in the server
@@ -693,12 +784,19 @@ class Commands(commands.Cog):
             # Send Embed
             await ctx.send(embed=banlistEmbed)
 
+    # # # # # # #
+    # y!leave   #
+    # # # # # # #
+    # Kick bot but safe
     @commands.command()
     @commands.cooldown(1, 60, commands.BucketType.guild)
     @has_permissions(kick_members=True)
     async def leave(self, ctx):
         # Delete command message
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # Ping Embed
@@ -724,7 +822,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # #
@@ -740,7 +841,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # #
@@ -756,7 +860,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # #
@@ -772,7 +879,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # # #
@@ -782,14 +892,20 @@ class Commands(commands.Cog):
     @commands.Cog.listener()
     @banlist.error
     async def banlist_error(self, ctx, error):
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         if isinstance(error, MissingPermissions):
             noPermEmbed = discord.Embed(title=f'You Do Not Have Perms To Check The Banlist ❌',
                                         color=discord.Color(embedColor),
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=noPermEmbed, delete_after=5)
 
     # # # # # # # # #
@@ -806,7 +922,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=notCmdEmbed, delete_after=3)
 
         elif isinstance(error, commands.CommandOnCooldown):
@@ -815,7 +934,10 @@ class Commands(commands.Cog):
                                         timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
-            await ctx.channel.purge(limit=1)
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
             await ctx.send(embed=notCmdEmbed, delete_after=1)
 
         else:
@@ -831,7 +953,10 @@ class Commands(commands.Cog):
     # # # # # # # #
     @commands.command()
     async def emmy(self, ctx, member: discord.Member):
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         if ctx.author.id == 318794495502188545 or 347718757105532939:
             emmyEmbed = discord.Embed(description=f"**Shut the Fuck Up** {member.mention}",
                                       color=discord.Color(embedColor)) \
@@ -844,12 +969,15 @@ class Commands(commands.Cog):
                                         color=discord.Color(embedColor))
             await ctx.send(embed=eyezikEmbed, delete_after=3)
 
-    # # # # # # # # #
-    # Eyezik Command#
-    # # # # # # # # #
+    # # # # # # # # # #
+    # Eyezik Commands #
+    # # # # # # # # # #
     @commands.command()
     async def frickyou(self, ctx, member: discord.Member = None):
-        await ctx.channel.purge(limit=1)
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
         if ctx.author.id == 347718757105532939:
             eyezikEmbed = discord.Embed(title=f"",
                                         description=f'**Frick you** {member.mention}',
@@ -859,6 +987,40 @@ class Commands(commands.Cog):
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             await ctx.send(embed=eyezikEmbed)
+        else:
+            eyezikEmbed = discord.Embed(title='Your Not Eyezik',
+                                        color=discord.Color(embedColor))
+            await ctx.send(embed=eyezikEmbed, delete_after=3)
+
+    @commands.command()
+    async def no(self, ctx, *, message="No"):
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
+        if ctx.author.id == 347718757105532939:
+            await ctx.send(f"""``` 
+⠀
+
+
+
+
+
+
+
+
+                                                      
+                                                     {message}.
+
+
+
+
+
+
+
+
+
+⠀```""")
         else:
             eyezikEmbed = discord.Embed(title='Your Not Eyezik',
                                         color=discord.Color(embedColor))
