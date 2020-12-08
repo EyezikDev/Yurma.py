@@ -36,7 +36,7 @@ helpFun = "\n > **y!roll {number}** - Rolls a dice \n> *(More then 6, less then 
 helpModTitle = "Moderation Commands :crossed_swords:"
 helpMod = "\n> **y!joinmessage** - Information on setting up user join message TODO\n" \
           "> **y!leavemessage** - Information on setting up leave join message TODO\n" \
-          "> **y!clear {number}** - Clears a number of lines in chat. \n> *(Default 10, Max 100)*\n" \
+          "> **y!clear {number}** - Clears a number of lines in chat. \n> *(Default 10, Max 50)*\n" \
           "> **y!kick {mention} {reason}** - Kicks mentioned user\n" \
           "> **y!ban {mention} {reason}** - Bans mentioned user\n" \
           "> **y!unban {name#1234}** - Unbans user\n" \
@@ -499,7 +499,7 @@ class Commands(commands.Cog):
                 # Send Embed
                 await ctx.send(embed=diceErrorEmbed, delete_after=10)
         # Catch...
-        except:
+        except TypeError:
             # Dice Error 2 Embed
             # If the user input isn't a int tell users
             diceErrorEmbed = discord.Embed(title=f'Please Enter A Valid Number ❌',
@@ -531,7 +531,7 @@ class Commands(commands.Cog):
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # If amount of lines to clear is under 100
-        if amount <= 50:
+        if amount <= 25:
             # Clear Embed
             clearEmbed = discord.Embed(title=f'Cleared {amount} Messages',
                                        color=discord.Color(embedColor),
@@ -916,29 +916,51 @@ class Commands(commands.Cog):
     async def on_command_error(self, ctx, error):
 
         if isinstance(error, commands.CommandNotFound):
-            notCmdEmbed = discord.Embed(title=f'Not a command ❌',
-                                        description="> y!help - for a list of commands",
-                                        color=discord.Color(embedColor),
-                                        timestamp=datetime.utcnow()) \
+            errorEmbed = discord.Embed(title=f'Not a command ❌',
+                                       description="> y!help - for a list of commands",
+                                       color=discord.Color(embedColor),
+                                       timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             try:
                 await ctx.channel.purge(limit=1)
             except discord.errors.Forbidden:
                 pass
-            await ctx.send(embed=notCmdEmbed, delete_after=3)
+            await ctx.send(embed=errorEmbed, delete_after=3)
 
         elif isinstance(error, commands.CommandOnCooldown):
-            notCmdEmbed = discord.Embed(title=f'Command on cool down ❌',
-                                        color=discord.Color(embedColor),
-                                        timestamp=datetime.utcnow()) \
+            errorEmbed = discord.Embed(title=f'Command on cool down ❌',
+                                       color=discord.Color(embedColor),
+                                       timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}",
                             icon_url=f"{ctx.author.avatar_url}")
             try:
                 await ctx.channel.purge(limit=1)
             except discord.errors.Forbidden:
                 pass
-            await ctx.send(embed=notCmdEmbed, delete_after=1)
+            await ctx.send(embed=errorEmbed, delete_after=1)
+        elif isinstance(error, commands.TooManyArguments):
+            errorEmbed = discord.Embed(title=f'Too Many Arguments ❌',
+                                       color=discord.Color(embedColor),
+                                       timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}",
+                            icon_url=f"{ctx.author.avatar_url}")
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
+            await ctx.send(embed=errorEmbed, delete_after=1)
+        elif isinstance(error, commands.BotMissingPermissions):
+            errorEmbed = discord.Embed(title=f'Please Insure YurmaBot Has Correct Permissions.',
+                                       color=discord.Color(embedColor),
+                                       timestamp=datetime.utcnow()) \
+                .set_footer(text=f"Command Run By {ctx.author}",
+                            icon_url=f"{ctx.author.avatar_url}")
+            try:
+                await ctx.channel.purge(limit=1)
+            except discord.errors.Forbidden:
+                pass
+            await ctx.send(embed=errorEmbed, delete_after=1)
 
         else:
             print(''.join(traceback.format_exception(type(error), error, error.__traceback__)))
