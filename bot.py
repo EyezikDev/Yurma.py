@@ -37,8 +37,8 @@ client.remove_command('help')
 
 
 def fortnite_tracker_api_top(platform, nickname):
-    URL = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(URL, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
+    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             lifetime_stats = req.json()['lifeTimeStats']
@@ -50,8 +50,8 @@ def fortnite_tracker_api_top(platform, nickname):
 
 
 def fortnite_tracker_api_stats(platform, nickname):
-    URL = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(URL, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
+    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             lifetime_stats = req.json()['lifeTimeStats']
@@ -63,8 +63,8 @@ def fortnite_tracker_api_stats(platform, nickname):
 
 
 def fortnite_map():
-    URL = 'https://fortnite-api.com/v1/map'
-    req = requests.get(URL)
+    url = 'https://fortnite-api.com/v1/map'
+    req = requests.get(url)
     if req.status_code == 200:
         try:
 
@@ -77,8 +77,8 @@ def fortnite_map():
 
 
 def fortnite_avatar(platform, nickname):
-    URL = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(URL, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
+    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             avatar = req.json()['avatar']
@@ -91,11 +91,11 @@ def fortnite_avatar(platform, nickname):
 
 class MyMenu(menus.Menu):
     async def send_initial_message(self, ctx, channel):
-        leaveEmbed = discord.Embed(title=f'- Remove YurmaBot From This Server? -',
-                                   description=f'> :white_check_mark: - Yes \n> :x: - No',
-                                   color=discord.Color(embedColor),
-                                   timestamp=datetime.utcnow())
-        return await channel.send(embed=leaveEmbed)
+        leave_embed = discord.Embed(title=f'- Remove YurmaBot From This Server? -',
+                                    description=f'> :white_check_mark: - Yes \n> :x: - No',
+                                    color=discord.Color(embedColor),
+                                    timestamp=datetime.utcnow())
+        return await channel.send(embed=leave_embed)
 
     @menus.button('\N{WHITE HEAVY CHECK MARK}')
     async def on_thumbs_up(self, payload):

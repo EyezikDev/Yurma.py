@@ -531,7 +531,7 @@ class Commands(commands.Cog):
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         # If amount of lines to clear is under 100
-        if amount <= 100:
+        if amount <= 50:
             # Clear Embed
             clearEmbed = discord.Embed(title=f'Cleared {amount} Messages',
                                        color=discord.Color(embedColor),
@@ -544,7 +544,7 @@ class Commands(commands.Cog):
         # Else
         else:
             # Clear Error Embed
-            clearErrorEmbed = discord.Embed(title=f'Can Not Clear More Then 100 Messages',
+            clearErrorEmbed = discord.Embed(title=f'Can Not Clear More Then 50 Messages',
                                             color=discord.Color(embedColor),
                                             timestamp=datetime.utcnow()) \
                 .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
