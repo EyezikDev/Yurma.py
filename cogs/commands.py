@@ -23,6 +23,8 @@ embedColor = 0x8011fc
 helpUntTitle = "Utility Commands :gear:"
 helpUnt = "\n > **y!help** - Pulls up this menu\n" \
           " > **y!invite** - Invite YurmaBot to your own server\n" \
+          " > **y!support** - Invite to YurmaBot support server\n" \
+          " > **y!github** - GitHub link\n" \
           " > **y!ping** - Current bot ping\n" \
           " > **y!user** - Shows your account information\n" \
           " > **y!user {mention}** - Shows mentioned accounts information\n" \
@@ -134,6 +136,54 @@ class Commands(commands.Cog):
             .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
             # Send Embed
         await ctx.send(embed=inviteEmbed)
+
+    # # # # # # #
+    # y!support  #
+    # # # # # # #
+    # YurmaBot support server invite
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def support(self, ctx):
+        # Delete command message
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        supportEmbed = discord.Embed(title='~~────────────~~ Support ~~─────────────~~',
+                                     description=f'YurmaBot support discord [here!]'
+                                                 f'(https://discord.gg/mhWfzS5sQg)',
+                                     color=discord.Color(embedColor),
+                                     timestamp=datetime.utcnow()) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            # Send Embed
+        await ctx.send(embed=supportEmbed)
+
+    # # # # # # #
+    # y!github  #
+    # # # # # # #
+    # YurmaBot GitHub link
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def github(self, ctx):
+        # Delete command message
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        # Ping Embed
+        githubEmbed = discord.Embed(title='~~────────────~~ GitHub ~~─────────────~~',
+                                    description=f'YurmaBot GitHub [here!]'
+                                                f'(https://github.com/EyezikDev/YurmaBot)',
+                                    color=discord.Color(embedColor),
+                                    timestamp=datetime.utcnow()) \
+            .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
+            # Send Embed
+        await ctx.send(embed=githubEmbed)
 
     # # # # # #
     # y!ping  #

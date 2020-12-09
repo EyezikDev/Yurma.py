@@ -33,7 +33,6 @@ token = read_token()
 # Client start then link the token and start
 client = commands.Bot(command_prefix=commands.when_mentioned_or("y!"), case_insensitive=True)
 client.remove_command('help')
-client.owner_id(347718757105532939)
 
 
 def fortnite_tracker_api_top(platform, nickname):
