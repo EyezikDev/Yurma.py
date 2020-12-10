@@ -1,13 +1,13 @@
 # Imports
 from datetime import datetime
-
+from discord.ext import commands, tasks, menus
+from pip._vendor import requests
+from random import choice
+import discord
 import os
 
 # Test
 # Version (DO NOT TOUCH)
-import discord
-from discord.ext import commands, menus
-from pip._vendor import requests
 
 YurmaVersion = 1.5
 
@@ -31,13 +31,15 @@ def read_key():
 token = read_token()
 
 # Client start then link the token and start
-client = commands.Bot(command_prefix=commands.when_mentioned_or("y!"), case_insensitive=True)
+client = commands.Bot(command_prefix=commands.when_mentioned_or(
+    "y!"), case_insensitive=True)
 client.remove_command('help')
 
 
 def fortnite_tracker_api_top(platform, nickname):
     url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    req = requests.get(
+        url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             lifetime_stats = req.json()['lifeTimeStats']
@@ -50,7 +52,8 @@ def fortnite_tracker_api_top(platform, nickname):
 
 def fortnite_tracker_api_stats(platform, nickname):
     url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    req = requests.get(
+        url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             lifetime_stats = req.json()['lifeTimeStats']
@@ -77,7 +80,8 @@ def fortnite_map():
 
 def fortnite_avatar(platform, nickname):
     url = 'https://api.fortnitetracker.com/v1/profile/' + platform + '/' + nickname
-    req = requests.get(url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
+    req = requests.get(
+        url, headers={"TRN-Api-Key": "fc6a2045-846d-4f0f-bf28-b9801151e889"})
     if req.status_code == 200:
         try:
             avatar = req.json()['avatar']
@@ -108,7 +112,6 @@ class MyMenu(menus.Menu):
     @menus.button('\N{CROSS MARK}')
     async def on_thumbs_down(self, payload):
         await self.message.delete()
-
 
 ########################################################################################################################
 #              #

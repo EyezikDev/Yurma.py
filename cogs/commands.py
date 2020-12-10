@@ -1,15 +1,14 @@
 import os
 import sys
 import traceback
-from datetime import datetime
+import random
+import discord
 
+from datetime import datetime
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from pip._vendor import requests
-from bot import fortnite_tracker_api_top, fortnite_tracker_api_stats, fortnite_avatar, read_key, MyMenu
-
-import random
-import discord
+from bot import fortnite_avatar, fortnite_tracker_api_stats, fortnite_tracker_api_top, read_key, MyMenu
 
 # Version (DO NOT TOUCH)
 
@@ -30,10 +29,14 @@ helpUnt = "\n > **y!help** - Pulls up this menu\n" \
           " > **y!user {mention}** - Shows mentioned accounts information\n" \
           " > **y!facts** - Facts command help menu\n" \
           " > **y!search {phrase}** - Built in search engine\n" \
-          " > **y!fortnite** - Fortnite command help menu\n"
+          " > **y!fortnite** - Fortnite command help menu\n" \
+          " > **y!svote** - Vote for your current server\n"
 
 helpFunTitle = "Fun Commands :gem:"
 helpFun = "\n > **y!roll {number}** - Rolls a dice \n> *(More then 6, less then 100,000)*\n"
+
+helpMusicTitle = "Music Commands :musical_note:"
+helpMusic = "\n > **y!play {link}** - Plays audio from a Youtube link\n"
 
 helpModTitle = "Moderation Commands :crossed_swords:"
 helpMod = "\n> **y!joinmessage** - Information on setting up user join message TODO\n" \
@@ -106,6 +109,7 @@ class Commands(commands.Cog):
                                   timestamp=datetime.utcnow()) \
             .add_field(name=helpUntTitle, value=helpUnt, inline=False) \
             .add_field(name=helpFunTitle, value=helpFun, inline=False) \
+            .add_field(name=helpMusicTitle, value=helpMusic, inline=False) \
             .add_field(name=helpModTitle, value=helpMod, inline=False) \
             .set_footer(text=f"Command Run By {ctx.author}", icon_url=f"{ctx.author.avatar_url}") \
             .set_thumbnail(url=ctx.bot.user.avatar_url)
@@ -258,6 +262,33 @@ class Commands(commands.Cog):
         # Send Embed
         await ctx.send(embed=userEmbed)
 
+    # # # # # #
+    # y!svote #
+    # # # # # #
+    # User information based on server
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def vote(self, ctx):
+        # Delete command message
+        try:
+            await ctx.channel.purge(limit=1)
+        except discord.errors.Forbidden:
+            pass
+        # Console Log
+        print(f"{ctx.author} executed {ctx.command}")
+        voteEmbed = discord.Embed(title="~~───────────~~ Vote ~~───────────~~",
+                                  color=discord.Color(embedColor),
+                                  timestamp=datetime.utcnow()) \
+            .add_field(name="- Server Voting - ",
+                       value=f"[Top.gg](https://top.gg/servers/{ctx.channel.guild.id}/vote)\n"
+                             f"[Discordservers.me](https://discordservers.me/servers/"
+                             f"{ctx.channel.guild.id}/upvote)", inline=False) \
+            .add_field(name="- YurmaBot Voting - ",
+                       value=f"[Top.gg](https://top.gg/bot/781139148249497610)\n"
+                             f"[Discordbotlist.com](https://discordbotlist.com/bots/yurmabot/upvote)", inline=False) \
+            # Send Embed
+        await ctx.send(embed=voteEmbed)
+
     # # # # # # # # #
     # y!facts       #
     # # # # # # # # #
@@ -297,11 +328,11 @@ class Commands(commands.Cog):
         # Console Log
         print(f"{ctx.author} executed {ctx.command}")
         URL = f"https://uselessfacts.jsph.pl/random.json?language=en"
-        REQ = requests.get(URL, headers={})
-        if REQ.status_code == 200:
-            fact = REQ.json()['text']
+        req = requests.get(URL, headers={})
+        if req.status_code == 200:
+            fact = req.json()['text']
         else:
-            await ctx.send(f"API returned a {REQ.status}.")
+            await ctx.send(f"API returned a {req.status}.")
         randomEmbed = discord.Embed(title=f'~~──────────~~ Random Fact ~~───────────~~',
                                     description=f'> {fact}',
                                     color=discord.Color(embedColor),
