@@ -8,11 +8,11 @@ from datetime import datetime
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from pip._vendor import requests
-from bot import fortnite_avatar, fortnite_tracker_api_stats, fortnite_tracker_api_top, read_key, MyMenu
+from bot import fortnite_avatar, fortnite_tracker_api_stats, fortnite_tracker_api_top, read_key, MyMenu, version
 
 # Version (DO NOT TOUCH)
 
-YurmaVersion = 1.5
+YurmaVersion = version()
 
 footerMessageDefault = f"v{discord.__version__} Discord.py"
 unbanDiscord = "https://discord.gg/RQwQvuAu9a"

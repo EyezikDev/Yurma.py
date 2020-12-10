@@ -4,8 +4,9 @@ from discord.ext import commands
 import discord
 
 # Version (DO NOT TOUCH)
+from bot import version
 
-YurmaVersion = 2.0
+YurmaVersion = version()
 
 footerMessageDefault = f"v{discord.__version__} Discord.py  •  v{YurmaVersion} YurmaBot"
 botDebugChannel = 519324051701760012

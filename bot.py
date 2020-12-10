@@ -1,15 +1,17 @@
 # Imports
 from datetime import datetime
-from discord.ext import commands, tasks, menus
+from discord.ext import commands, menus
 from pip._vendor import requests
-from random import choice
 import discord
 import os
+
 
 # Test
 # Version (DO NOT TOUCH)
 
-YurmaVersion = 1.5
+def version():
+    return 2.3
+
 
 embedColor = 0x8011fc
 
@@ -112,6 +114,7 @@ class MyMenu(menus.Menu):
     @menus.button('\N{CROSS MARK}')
     async def on_thumbs_down(self, payload):
         await self.message.delete()
+
 
 ########################################################################################################################
 #              #
