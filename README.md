@@ -10,7 +10,9 @@
 By: EyezikDev
 
 If someone some how finds this and wants to use it just make sure to make a 
-```token.txt``` and put it along side the ```bot.py``` file
+```token.txt``` and put it along side the ```bot.py``` file.
+
+This bot was made as a side project and is currently inactive. Plan to see it back online soon once I feel like updating it again!
 
 
  Resources: <br> 
