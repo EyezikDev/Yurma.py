@@ -4,7 +4,7 @@
 
 [![version](https://img.shields.io/github/v/release/eyezikdev/Yurmabot?color=blueviolet)]()
 [![commits](https://img.shields.io/github/commits-since/eyezikdev/yurmabot/latest?color=blueviolet)]()
-[![discord](https://img.shields.io/discord/509870514492407819?color=blueviolet&label=The%20Wave&logo=Discord&logoColor=blueviolet)](https://discord.gg/4YrgGTVgVB)
+[![discord](https://img.shields.io/discord/509870514492407819?color=blueviolet&label=Talkie%20Place&logo=Discord&logoColor=blueviolet)](https://discord.gg/4YrgGTVgVB)
 [![stars](https://img.shields.io/github/stars/eyezikdev/yurmabot?color=blueviolet)]()
 
 By: EyezikDev
