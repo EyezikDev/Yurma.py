@@ -16,5 +16,6 @@ If someone some how finds this and wants to use it just make sure to make a
 
 
  Resources: <br> 
+ https://github.com/Rapptz/discord.py - Discord.py <br>
  https://github.com/jsondoo/fortnite-discord-bot - Fortnite Bot Sample <br>
  https://github.com/Rapptz/discord-ext-menus - Discord Menus <br>
